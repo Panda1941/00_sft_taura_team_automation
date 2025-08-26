@@ -8,13 +8,13 @@ import { delay } from './helper';
  * Page object for main admin page actions and selectors
  */
 export class MainPageAdmin extends BasePage {
-    loginPage: LoginPage;
-    lunchEditingButton: Locator;
-    newProviderButton: Locator;
-    providerNameField: Locator;
-    dishNameField: Locator;
-    dishPriceField: Locator;
-    dishCountField: Locator;
+    readonly loginPage: LoginPage;
+    readonly lunchEditingButton: Locator;
+    readonly newProviderButton: Locator;
+    readonly providerNameField: Locator;
+    readonly dishNameField: Locator;
+    readonly dishPriceField: Locator;
+    readonly dishCountField: Locator;
 
     constructor(page: Page) {
         super(page);
