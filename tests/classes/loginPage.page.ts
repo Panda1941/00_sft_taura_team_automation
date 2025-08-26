@@ -20,8 +20,9 @@ export class loginPage extends BasePage {
         this.loginButon = page.locator('button', { hasText: 'Login' });
         this.appWrap = page.locator('.application--wrap');
         this.signOutButton = page.locator('span', { hasText: 'Sign Out' });
-        this.lunchEditingButton = page.locator('span', { hasText: 'Lunch Editing' });
-        this.closeReviewButton = page.locator('button', { hasText: 'Close' });
+        this.signOutButton = page.getByText('exit_to_appSign Out');
+        this.lunchEditingButton = page.getByText('mode_editLunch Editing');
+        this.closeReviewButton = page.getByRole('button', { name: 'Close' });
     }
 
     async goto(){

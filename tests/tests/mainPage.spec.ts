@@ -12,10 +12,9 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('Choose a dish', async ({ page }) => {
-    await delay(1000);
     await mainPage.chooseDish();
-    await delay(1000);
     await mainPage.clickOrderDishesButton();
-    await delay(1000);
     await mainPage.verifyDishChosen();
 });
+
+// Not 100% sure of what else to test here, everything seems to be working as expected
