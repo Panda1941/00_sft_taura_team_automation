@@ -1,20 +1,32 @@
+// Centralized constants for tests
 export const vars = {
-    correct_email: 'paulius.puzas@sft.com',
-    correct_password: 'student394',
-
-    incorrect_email: 'wrong.email@sft.com',
-    incorrect_password: 'wrongpassword',
-
-    admin_email: 'admin1@sft.com',
-    admin_password: 'admin810',
-
-    provider_name: 'testProvider',
-
-    dish_name: 'testDish',
-    dish_price: 15,
-    dish_count: 5,
-
-    soup_name: 'testSoup',
-    soup_price: 5,
-    soup_count: 15
+    credentials: {
+        correct: {
+            email: 'paulius.puzas@sft.com',
+            password: 'student394',
+        },
+        incorrect: {
+            email: 'wrong.email@sft.com',
+            password: 'wrongpassword',
+        },
+        admin: {
+            email: 'admin1@sft.com',
+            password: 'admin810',
+        }
+    },
+    provider: {
+        name: 'testProvider',
+        color: 'Red',
+    },
+    dish: {
+        name: 'testDish',
+        price: 15,
+        count: 5,
+    },
+    soup: {
+        name: 'testSoup',
+        price: 5,
+        count: 15,
+    },
+    transition_delay: 500
 };

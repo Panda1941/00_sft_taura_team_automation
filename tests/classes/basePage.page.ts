@@ -1,20 +1,24 @@
-import { Page, expect, Locator, test } from '@playwright/test';
+import { Page, Locator } from '@playwright/test';
 
+/**
+ * Base page for shared selectors and actions
+ */
 export class BasePage {
     readonly page: Page;
     readonly closeReviewButton: Locator;
 
-    constructor(page: Page){
+    constructor(page: Page) {
         this.page = page;
-        
-        this.closeReviewButton = page.locator('button', { hasText: 'Close' });
+        this.closeReviewButton = page.getByRole('button', { name: 'Close' });
     }
 
-    async goto(){
+    /** Navigates to the home page. */
+    async goto() {
         await this.page.goto('/');
     }
 
-    async closeReviewDialog(){
+    /** Closes the review dialog if open. */
+    async closeReviewDialog() {
         await this.closeReviewButton.click();
     }
 }

@@ -1,74 +1,66 @@
-import { Page, expect, Locator, test } from '@playwright/test';
+import { Page, expect, Locator } from '@playwright/test';
 import { BasePage } from './basePage.page';
-import { loginPage as LoginPageClass } from './loginPage.page';
+import { LoginPage } from './loginPage.page';
 import { vars } from '../others/constants';
+import { delay } from './helper';
 
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
-
-export class mainPageAdmin extends BasePage {
-    loginPage: LoginPageClass;
-
+/**
+ * Page object for main admin page actions and selectors
+ */
+export class MainPageAdmin extends BasePage {
+    loginPage: LoginPage;
     lunchEditingButton: Locator;
     newProviderButton: Locator;
-
     providerNameField: Locator;
-
     dishNameField: Locator;
     dishPriceField: Locator;
     dishCountField: Locator;
 
-    constructor(page: Page){
+    constructor(page: Page) {
         super(page);
-        this.loginPage = new LoginPageClass(page);
-
+        this.loginPage = new LoginPage(page);
         this.lunchEditingButton = page.getByText('mode_editLunch Editing');
         this.newProviderButton = page.getByRole('button').filter({ hasText: 'add' });
-
         this.providerNameField = page.getByRole('combobox', { name: 'Provider Name' });
-
         this.dishNameField = page.getByRole('textbox', { name: 'Selection Name' });
         this.dishPriceField = page.getByRole('spinbutton', { name: 'Price' });
         this.dishCountField = page.getByRole('spinbutton', { name: 'Count' });
     }
 
-    async goto(){
+    /** Navigates to admin page and logs in as admin. */
+    async goto() {
         await this.loginPage.goto();
         await this.loginPage.loginWithAdminCredentials();
-        
-        if(await this.closeReviewButton.isVisible()){
+        if (await this.closeReviewButton.isVisible()) {
             await this.closeReviewDialog();
         }
     }
 
-    async createNewProvider(){
+    /** Creates a new provider with given parameters. */
+    async createNewProvider(params: { name: string, color: string, soup: { name: string, price: number, count: number }, dish: { name: string, price: number, count: number } }) {
         await this.lunchEditingButton.click();
         await this.page.getByRole('button').filter({ hasText: 'buildclose' }).hover();
         await this.newProviderButton.click();
-
-        await this.providerNameField.fill(vars.provider_name);
-
-        // Select color (done without locators since its a single checkbox)
+        await this.providerNameField.fill(params.name);
         await this.page.getByRole('combobox', { name: 'Color' }).click();
-        await this.page.locator('a').filter({ hasText: 'Red' }).first().click();
-
-        await this.fillDishData(vars.soup_name, vars.soup_price, vars.soup_count);
-
+        await this.page.locator('a').filter({ hasText: params.color }).first().click();
+        await this.fillDishData(params.soup.name, params.soup.price, params.soup.count);
         await this.page.getByText('Pagrindiniai Patiekalai').click();
-        await delay(500);   // Small delay to account for the transition
-        await this.fillDishData(vars.dish_name, vars.dish_price, vars.dish_count);
-
+        await delay(vars.transition_delay);
+        await this.fillDishData(params.dish.name, params.dish.price, params.dish.count);
         await this.page.getByRole('button', { name: 'Save' }).click();
-
-        await expect(this.page.getByText('Provider Succesfully saved.')).toBeVisible();
-        await expect(this.page.getByText('checktestSupplier')).toBeVisible();
     }
 
+    /** Fills dish data fields. */
     async fillDishData(name: string, price: number, count: number) {
         await this.dishNameField.fill(name);
         await this.dishPriceField.fill(price.toString());
         await this.dishCountField.fill(count.toString());
     }
 
-    async checkProvider() {
+    /** Verifies provider creation success. */
+    async verifyProviderCreated(name: string) {
+        await expect(this.page.getByText('Provider Succesfully saved.')).toBeVisible();
+        await expect(this.page.getByText('check' + name).first()).toBeVisible();
     }
 }

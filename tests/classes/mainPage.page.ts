@@ -1,16 +1,19 @@
-import { Page, expect, Locator, test } from '@playwright/test';
+import { Page, expect, Locator } from '@playwright/test';
 import { BasePage } from './basePage.page';
-import { loginPage as LoginPageClass } from './loginPage.page';
+import { LoginPage } from './loginPage.page';
+import { vars } from '../others/constants';
+import { delay } from './helper';
 
-export class mainPage extends BasePage {
-    loginPage: LoginPageClass;
+// Main user page actions and selectors
+export class MainPage extends BasePage {
+    loginPage: LoginPage;
 
     dishes: Locator;
     orderDishesButton: Locator;
 
     constructor(page: Page){
         super(page);
-        this.loginPage = new LoginPageClass(page);
+        this.loginPage = new LoginPage(page);
 
         this.dishes = page.locator('.dish-card');
         this.orderDishesButton = page.locator('.orders-list-button');
@@ -19,7 +22,8 @@ export class mainPage extends BasePage {
     async goto(){
         await this.loginPage.goto();
         await this.loginPage.loginWithBaseCredentials();
-        
+
+        await delay(vars.transition_delay);
         if(await this.closeReviewButton.isVisible()){
             await this.closeReviewDialog();
         }

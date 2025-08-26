@@ -1,13 +1,11 @@
 import { test, expect } from '@playwright/test';
 import { vars } from '../others/constants';
-import { mainPage as MainPageClass } from '../classes/mainPage.page';
+import { MainPage } from '../classes/mainPage.page';
 
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
-
-let mainPage: MainPageClass;
+let mainPage: MainPage;
 
 test.beforeEach(async ({ page }) => {
-    mainPage = new MainPageClass(page);
+    mainPage = new MainPage(page);
     await mainPage.goto();
 });
 

@@ -1,11 +1,12 @@
-import { Page, expect, Locator, test } from '@playwright/test';
+import { Page, expect, Locator } from '@playwright/test';
 import { BasePage } from './basePage.page';
 import { vars } from '../others/constants';
 
-export class loginPage extends BasePage {
+// Login page actions and selectors
+export class LoginPage extends BasePage {
     readonly email: Locator;
     readonly password: Locator;
-    readonly loginButon: Locator;
+    readonly loginButton: Locator;
     readonly appWrap: Locator;
 
     readonly signOutButton: Locator;
@@ -17,10 +18,9 @@ export class loginPage extends BasePage {
 
         this.email = page.locator('input[name=email]');
         this.password = page.locator('input[name=password]');
-        this.loginButon = page.locator('button', { hasText: 'Login' });
+        this.loginButton = page.locator('button', { hasText: 'Login' });
         this.appWrap = page.locator('.application--wrap');
         this.signOutButton = page.locator('span', { hasText: 'Sign Out' });
-        this.signOutButton = page.getByText('exit_to_appSign Out');
         this.lunchEditingButton = page.getByText('mode_editLunch Editing');
         this.closeReviewButton = page.getByRole('button', { name: 'Close' });
     }
@@ -35,7 +35,7 @@ export class loginPage extends BasePage {
     }
 
     async submitLogin() {
-        await this.loginButon.click();
+        await this.loginButton.click();
     }
 
     async verifyLoginSuccess() {
@@ -57,7 +57,7 @@ export class loginPage extends BasePage {
         await expect(this.signOutButton).toBeHidden();
         await expect(this.page).toHaveURL('/login-password');
         // TODO: This currently succeeds even when the actual login would fail. There is no error handling implemented.
-        await expect(this.page.locator('text=Invalid email or password')).toBeVisible();    // <--- This should be improved
+        await expect(this.page.locator('text=Invalid email or password')).toBeVisible();    // TODO: This text is not currently shown, need to implement error handling
     }
 
     async verifyAdmin(){
@@ -69,14 +69,14 @@ export class loginPage extends BasePage {
     }
 
     async loginWithBaseCredentials() {
-        await this.enterCredentials(vars.correct_email, vars.correct_password);
+        await this.enterCredentials(vars.credentials.correct.email, vars.credentials.correct.password);
         await this.submitLogin();
 
         await this.verifyLoginSuccess();
     }
 
     async loginWithAdminCredentials(){
-        await this.enterCredentials(vars.admin_email, vars.admin_password);
+        await this.enterCredentials(vars.credentials.admin.email, vars.credentials.admin.password);
         await this.submitLogin();
 
         await this.verifyLoginSuccess();
