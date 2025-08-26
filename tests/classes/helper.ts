@@ -1,5 +1,5 @@
 /**
- * Delay helper for async actions
+ * Delay method for transitions mainly
  */
 const delay = (ms: number): Promise<void> => new Promise(resolve => setTimeout(resolve, ms));
 

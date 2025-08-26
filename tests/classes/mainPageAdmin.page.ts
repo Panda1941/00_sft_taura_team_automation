@@ -41,6 +41,7 @@ export class MainPageAdmin extends BasePage {
         await this.lunchEditingButton.click();
         await this.page.getByRole('button').filter({ hasText: 'buildclose' }).hover();
         await this.newProviderButton.click();
+        
         await this.providerNameField.fill(params.name);
         await this.page.getByRole('combobox', { name: 'Color' }).click();
         await this.page.locator('a').filter({ hasText: params.color }).first().click();

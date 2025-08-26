@@ -40,6 +40,9 @@ export class MainPage extends BasePage {
         await this.orderDishesButton.click();
     }
 
+    /**TODO: This currently only selects the 1st dish, no matter if it has been chosen by the user already.
+    Make sure to clear users previous selection before testing */
+    
     /** Verifies dish selection. */
     async verifyDishChosen() {
         await expect(this.orderDishesButton).not.toContainText('Skip lunch', { ignoreCase: true });
