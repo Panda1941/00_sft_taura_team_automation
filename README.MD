@@ -1,4 +1,5 @@
-Covered Functionality
+Covered Functionality:
+
     Login:
     - Tests for correct and incorrect credentials
     - Admin and regular user login
